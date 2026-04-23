@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="ava.jpg">
+    <title>Конденсаторы — Mind Map</title>
+</head>
+<body>
+    <div id="scene">
+        <svg id="lines" width="100%" height="100vh" style="position:absolute; top:0; left:0; z-index:0;"></svg>
+
+        <button class="flow-btn" id="modeBtn" onclick="toggleMode()">
+        Параллельное
+        </button>
+
+        <div id="center" class="block" onclick="showMainInfo()">Конденсаторы</div>
+
+        <div id="parallel1" class="block" onclick="showInfo(1)" data-type="parallel">
+            Заряд Q<br><small>основная величина</small>
+        </div>
+
+        <div id="parallel2" class="block" onclick="showInfo(2)" data-type="parallel">
+            Ёмкость C<br><small>накопление энергии</small>
+        </div>
+
+        <div id="parallel3" class="block" onclick="showInfo(3)" data-type="parallel">
+            Энергия W<br><small>поле конденсатора</small>
+        </div>
+
+        <div id="parallel4" class="block" onclick="showInfo(4)" data-type="parallel">
+            Напряжение U<br><small>разность потенциалов</small>
+        </div>
+
+        <div id="series1" class="block" onclick="showInfo(5)" data-type="series">
+            Диэлектрик<br><small>изоляция</small>
+        </div>
+
+        <div id="series2" class="block" onclick="showInfo(6)" data-type="series">
+            Пластина<br><small>обкладка</small>
+        </div>
+
+        <div id="series3" class="block" onclick="showInfo(7)" data-type="series">
+            Поле E<br><small>напряжённость</small>
+        </div>
+
+        <div id="series4" class="block" onclick="showInfo(8)" data-type="series">
+            Система<br><small>цепь соединения</small>
+        </div>
+
+        <div id="panel" class="panel hidden"></div>
+
+        <script src="script.js"></script>
+    </div>
+</body>
+</html>
