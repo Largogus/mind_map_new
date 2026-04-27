@@ -1,5 +1,13 @@
 const svg = document.getElementById("lines");
 
+const graph = {
+  center: ["q", "c", "u", "w", "e", "d", "plate", "dielectric"],
+  q: ["center"],
+  c: ["center"],
+  u: ["center"],
+  w: ["center"],
+};
+
 const infoMap = {
   1: {
     title: "Заряд Q",
@@ -135,22 +143,58 @@ d — расстояние между пластинами<br>
 <br>
 Типы:<br>
 • параллельное (C увеличивается)<br>
-    q<sub>общ</sub> = q₁ + q₂ + ... + q<sub>n</sub><br>
-    U<sub>общ</sub> = U₁ = U₂ = ... = U<sub>n</sub><br>
-    C<sub>общ</sub> = C₁ + C₂ = ... = C<sub>n</sub><br>
 • последовательное (C уменьшается)<br>
-    q<sub>общ</sub> = q₁ = q₂ = ... = q<sub>n</sub><br>
-    U<sub>общ</sub> = U₁ + U₂ = ... + U<sub>n</sub><br>
-    1/C<sub>общ</sub> = 1/C₁ = 1/C₂ = ... = 1/C<sub>n</sub><br>
 <br>
 Зачем нужно:<br>
 • управление ёмкостью в цепях<br>
 • настройка фильтров и энергии<br>
 `
+  },
+
+    10: {
+    title: "Заряд",
+    text: `
+q<sub>общ</sub> = q₁ + q₂ + ... + q<sub>n</sub><br>
+`
+  },
+
+    9: {
+    title: "Напряжение",
+    text: `
+U<sub>общ</sub> = U₁ = U₂ = ... = U<sub>n</sub><br>
+`
+  },
+
+    11: {
+    title: "Ёмкость",
+    text: `
+C<sub>общ</sub> = C₁ + C₂ = ... = C<sub>n</sub><br>
+`
+  },
+
+    14: {
+    title: "Заряд",
+    text: `
+q<sub>общ</sub> = q₁ = q₂ = ... = q<sub>n</sub><br>
+`
+  },
+
+    13: {
+    title: "Напряжение",
+    text: `
+U<sub>общ</sub> + U₁ + U₂ = ... + U<sub>n</sub><br>
+`
+  },
+
+  15: {
+    title: "Ёмкость",
+    text: `
+1/C<sub>общ</sub> = 1/C₁ = 1/C₂ = ... = 1/C<sub>n</sub><br>
+`
   }
 };
 
-let mode = "parallel";
+let mode = "general";
 
 function createLine({ x1, y1, x2, y2 }) {
   const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
@@ -262,6 +306,35 @@ function drawSeries() {
   });
 }
 
+function drawAuto(map) {
+  svg.innerHTML = "";
+
+  Object.entries(map).forEach(([fromId, targets]) => {
+    const from = document.getElementById(fromId);
+    if (!from) return;
+
+    targets.forEach(toId => {
+      const to = document.getElementById(toId);
+      if (!to) return;
+
+      connect(from, to);
+    });
+  });
+}
+
+function connect(a, b) {
+  const r1 = a.getBoundingClientRect();
+  const r2 = b.getBoundingClientRect();
+
+  const x1 = r1.left + r1.width / 2;
+  const y1 = r1.top + r1.height / 2;
+
+  const x2 = r2.left + r2.width / 2;
+  const y2 = r2.top + r2.height / 2;
+
+  createLine({ x1, y1, x2, y2 });
+}
+
 function safeDraw(drawFn) {
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
@@ -275,6 +348,7 @@ function setMode(newMode) {
 
   const parallelBlocks = document.querySelectorAll('[data-type="parallel"]');
   const seriesBlocks = document.querySelectorAll('[data-type="series"]');
+  const generalBlocks = document.querySelectorAll('[data-type="general"]');
   const allBlocks = document.querySelectorAll(".block");
 
   allBlocks.forEach(b => b.classList.remove("active"));
@@ -286,6 +360,7 @@ function setMode(newMode) {
     });
 
     seriesBlocks.forEach(b => b.classList.add("hidden"));
+    generalBlocks.forEach(b => b.classList.add("hidden"));
   }
 
   if (mode === "series") {
@@ -295,24 +370,39 @@ function setMode(newMode) {
     });
 
     parallelBlocks.forEach(b => b.classList.add("hidden"));
+    generalBlocks.forEach(b => b.classList.add("hidden"));
+  }
+
+  if (mode === "general") {
+    seriesBlocks.forEach(b => b.classList.add("hidden"));
+    parallelBlocks.forEach(b => b.classList.add("hidden"));
+
+    generalBlocks.forEach(b => {
+      b.classList.remove("hidden");
+      b.classList.add("active");
+    });
   }
 
   safeDraw(() => {
     if (mode === "parallel") drawParallel();
     if (mode === "series") drawSeries();
+    if (mode === "general") drawAuto(graph);;
   });
 }
 
 function toggleMode() {
   const btn = document.getElementById("modeBtn");
-
-  if (mode === "parallel") {
+  if (mode === "general") {
+    setMode("parallel");
+    btn.textContent = "Параллельное";
+    btn.style.backgroundPosition = "50% 0%";
+  } else if (mode === "parallel") {
     setMode("series");
     btn.textContent = "Последовательное";
     btn.style.backgroundPosition = "100% 0%";
-  } else {
-    setMode("parallel");
-    btn.textContent = "Параллельное";
+  } else if (mode === "series") {
+    setMode("general");
+    btn.textContent = "Общее";
     btn.style.backgroundPosition = "0% 0%";
   }
 }
@@ -320,7 +410,7 @@ function toggleMode() {
 window.toggleMode = toggleMode;
 
 window.onload = () => {
-  setTimeout(() => setMode("parallel"), 50);
+  setTimeout(() => setMode("general"), 50);
 };
 
 function showInfo(id) {

@@ -12,40 +12,72 @@
         <svg id="lines" width="100%" height="100vh" style="position:absolute; top:0; left:0; z-index:0;"></svg>
 
         <button class="flow-btn" id="modeBtn" onclick="toggleMode()">
-        Параллельное
+            Общее
         </button>
 
         <div id="center" class="block" onclick="showMainInfo()">Конденсаторы</div>
 
-        <div id="parallel1" class="block" onclick="showInfo(1)" data-type="parallel">
+        <div class="block" onclick="showInfo(9)" data-type="parallel">
+            Напряжение<br><small>U одинаково</small>
+        </div>
+
+        <div class="block" onclick="showInfo(10)" data-type="parallel">
+            Заряд<br><small>Складывается</small>
+        </div>
+
+        <div class="block" onclick="showInfo(11)" data-type="parallel">
+            Ёмкость<br><small>Суммируется</small>
+        </div>
+
+        <div class="block" data-type="parallel">
+            Особенность<br><small>Увеличивает ёмкость</small>
+        </div>
+
+        <div class="block" onclick="showInfo(13)" data-type="series">
+            Напряжение<br><small>Складывается</small>
+        </div>
+
+        <div class="block" onclick="showInfo(14)" data-type="series">
+            Заряд<br><small>Одинаковый</small>
+        </div>
+
+        <div class="block" onclick="showInfo(15)" data-type="series">
+            Ёмкость<br><small>Уменьшается</small>
+        </div>
+
+        <div class="block" data-type="series">
+            Особенность<br><small>Делит напряжение</small>
+        </div>
+
+        <div id="q" class="block" onclick="showInfo(1)" data-type="general">
             Заряд Q<br><small>основная величина</small>
         </div>
 
-        <div id="parallel2" class="block" onclick="showInfo(2)" data-type="parallel">
+        <div id="c" class="block" onclick="showInfo(2)" data-type="general">
             Ёмкость C<br><small>накопление энергии</small>
         </div>
 
-        <div id="parallel3" class="block" onclick="showInfo(3)" data-type="parallel">
+        <div id="w" class="block" onclick="showInfo(3)" data-type="general">
             Энергия W<br><small>поле конденсатора</small>
         </div>
 
-        <div id="parallel4" class="block" onclick="showInfo(4)" data-type="parallel">
+        <div id="u" class="block" onclick="showInfo(4)" data-type="general">
             Напряжение U<br><small>разность потенциалов</small>
         </div>
 
-        <div id="series1" class="block" onclick="showInfo(5)" data-type="series">
+        <div id="dielectric" class="block" onclick="showInfo(5)" data-type="general">
             Диэлектрик<br><small>изоляция</small>
         </div>
 
-        <div id="series2" class="block" onclick="showInfo(6)" data-type="series">
+        <div id="plate" class="block" onclick="showInfo(6)" data-type="general">
             Пластина<br><small>обкладка</small>
         </div>
 
-        <div id="series3" class="block" onclick="showInfo(7)" data-type="series">
+        <div id="e" class="block" onclick="showInfo(7)" data-type="general">
             Поле E<br><small>напряжённость</small>
         </div>
 
-        <div id="series4" class="block" onclick="showInfo(8)" data-type="series">
+        <div id="d" class="block" onclick="showInfo(8)" data-type="general">
             Система<br><small>цепь соединения</small>
         </div>
 
